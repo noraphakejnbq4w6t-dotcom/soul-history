@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>测测你的灵魂对应哪位中国历史人物</title>
+  <meta name="description" content="趣味人格测试 · 从日常习惯与处事方式，看见你灵魂深处的中国历史人物">
+  <style>
+    :root {
+      --bg-deep: #0f0e0c;
+      --bg-card: #1a1814;
+      --bg-soft: #24201b;
+      --gold: #c9a227;
+      --gold-light: #e8d48b;
+      --cinnabar: #9e2a2b;
+      --cinnabar-soft: #c45c5c;
+      --ink: #e8e0d5;
+      --ink-dim: #a89f91;
+      --jade: #5c7a6e;
+      --paper: #f5efe6;
+      --shadow: rgba(0,0,0,0.45);
+      --radius: 16px;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      background: var(--bg-deep);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* 背景装饰 */
+    .bg-pattern {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(158, 42, 43, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(201, 162, 39, 0.06) 0%, transparent 50%),
+        linear-gradient(180deg, #0f0e0c 0%, #151310 100%);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .bg-pattern::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a227' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+
+    /* 通用容器 */
+    .container {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 页面切换 */
+    .page {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      animation: fadeIn 0.45s ease;
+    }
+    .page.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ========== 首页 ========== */
+    #home {
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .home-ornament {
+      font-size: 42px;
+      color: var(--gold);
+      opacity: 0.85;
+      margin-bottom: 12px;
+      letter-spacing: 8px;
+    }
+
+    .home-title {
+      font-size: clamp(26px, 7vw, 34px);
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 2px;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 20px rgba(201, 162, 39, 0.25);
+    }
+
+    .home-subtitle {
+      font-size: 14px;
+      color: var(--ink-dim);
+      letter-spacing: 4px;
+      margin-bottom: 32px;
+    }
+
+    .home-desc {
+      background: var(--bg-card);
+      border: 1px solid rgba(201, 162, 39, 0.2);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      margin-bottom: 36px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-desc::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--gold), var(--cinnabar));
+    }
+
+    .home-desc p {
+      font-size: 14px;
+      color: var(--ink-dim);
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+    .home-desc p:last-child { margin-bottom: 0; }
+
+    .home-desc strong {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #9e2a2b 0%, #c45c5c 50%, #9e2a2b 100%);
+      background-size: 200% 100%;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      padding: 16px 48px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(158, 42, 43, 0.35);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary:hover {
+      background-position: 100% 0;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(158, 42, 43, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .home-tips {
+      margin-top: 28px;
+      font-size: 12px;
+      color: var(--ink-dim);
+      opacity: 0.7;
+    }
+
+    /* ========== 答题页 ========== */
+    #quiz {
+      padding-top: 12px;
+    }
+
+    .progress-wrap {
+      margin-bottom: 28px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+
+    .progress-info .current {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--bg-soft);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cinnabar), var(--gold));
+      border-radius: 3px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .question-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(201, 162, 39, 0.15);
+      border-radius: var(--radius);
+      padding: 28px 22px;
+      margin-bottom: 24px;
+      animation: slideUp 0.4s ease;
+    }
+
+    .question-num {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--gold);
+      background: rgba(201, 162, 39, 0.12);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.55;
+      margin-bottom: 8px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--bg-soft);
+      border: 1px solid rgba(201, 162, 39, 0.12);
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 15px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-btn:hover {
+      border-color: rgba(201, 162, 39, 0.45);
+      background: rgba(201, 162, 39, 0.08);
+      transform: translateX(4px);
+    }
+
+    .option-btn:active {
+      transform: scale(0.98);
+    }
+
+    .option-btn.selected {
+      border-color: var(--gold);
+      background: rgba(201, 162, 39, 0.15);
+      color: var(--gold-light);
+    }
+
+    .option-btn .opt-label {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+      text-align: center;
+      background: rgba(201, 162, 39, 0.2);
+      color: var(--gold);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    /* ========== 结果页 ========== */
+    #result {
+      padding-bottom: 60px;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 28px;
+      animation: scaleIn 0.5s ease;
+    }
+
+    .result-label {
+      font-size: 13px;
+      color: var(--ink-dim);
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+
+    .result-name {
+      font-size: clamp(36px, 10vw, 48px);
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 4px;
+      margin-bottom: 6px;
+      text-shadow: 0 4px 24px rgba(201, 162, 39, 0.3);
+    }
+
+    .result-category {
+      display: inline-block;
+      font-size: 13px;
+      color: var(--cinnabar-soft);
+      border: 1px solid rgba(158, 42, 43, 0.4);
+      padding: 4px 16px;
+      border-radius: 20px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .result-quote {
+      font-size: 15px;
+      color: var(--gold);
+      font-style: italic;
+      line-height: 1.6;
+      max-width: 360px;
+      margin: 0 auto;
+      position: relative;
+      padding: 0 16px;
+    }
+
+    .result-quote::before,
+    .result-quote::after {
+      content: "「";
+      font-size: 22px;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+    .result-quote::after {
+      content: "」";
+    }
+
+    .result-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(201, 162, 39, 0.18);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      margin-bottom: 16px;
+      animation: slideUp 0.45s ease;
+      animation-fill-mode: both;
+    }
+
+    .result-card:nth-child(2) { animation-delay: 0.08s; }
+    .result-card:nth-child(3) { animation-delay: 0.16s; }
+    .result-card:nth-child(4) { animation-delay: 0.24s; }
+    .result-card:nth-child(5) { animation-delay: 0.32s; }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .card-title .icon {
+      font-size: 16px;
+    }
+
+    .card-content {
+      font-size: 14px;
+      color: var(--ink-dim);
+      line-height: 1.75;
+    }
+
+    .traits-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .trait-tag {
+      background: rgba(201, 162, 39, 0.12);
+      color: var(--gold-light);
+      font-size: 13px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(201, 162, 39, 0.2);
+    }
+
+    .easter-egg {
+      background: linear-gradient(135deg, rgba(158, 42, 43, 0.15), rgba(201, 162, 39, 0.1));
+      border: 1px dashed rgba(201, 162, 39, 0.35);
+    }
+
+    .result-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 28px;
+      animation: fadeIn 0.6s ease 0.4s both;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--gold);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      padding: 14px 32px;
+      border: 1px solid rgba(201, 162, 39, 0.45);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(201, 162, 39, 0.1);
+      border-color: var(--gold);
+    }
+
+    .share-tip {
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-dim);
+      margin-top: 8px;
+      opacity: 0.8;
+    }
+
+    /* 底部装饰 */
+    .footer-ornament {
+      text-align: center;
+      margin-top: auto;
+      padding-top: 32px;
+      font-size: 12px;
+      color: var(--ink-dim);
+      opacity: 0.5;
+      letter-spacing: 2px;
+    }
+
+    /* 加载中 */
+    .loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      text-align: center;
+    }
+    .loading.active {
+      display: flex;
+    }
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(201, 162, 39, 0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-text {
+      font-size: 15px;
+      color: var(--ink-dim);
+      letter-spacing: 2px;
+    }
+
+    /* 响应式微调 */
+    @media (max-width: 380px) {
+      .container { padding: 16px 14px 32px; }
+      .question-text { font-size: 16px; }
+      .option-btn { padding: 14px 14px; font-size: 14px; }
+      .result-name { font-size: 32px; }
+    }
+
+    @media (min-width: 768px) {
+      .container { padding: 40px 24px 60px; }
+      .home-title { font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-pattern"></div>
+
+  <div class="container">
+    <!-- 首页 -->
+    <div id="home" class="page active">
+      <div class="home-ornament">❖</div>
+      <h1 class="home-title">测测你的灵魂<br>对应哪位中国历史人物</h1>
+      <p class="home-subtitle">趣味人格镜像 · 非历史考试</p>
+
+      <div class="home-desc">
+        <p>从<strong>日常习惯、处事方式、社交模式、情绪反应与兴趣偏好</strong>出发，用40道生活化选择题，看见你灵魂深处最接近的历史人物气质。</p>
+        <p>不是专业知识考核，也不是专业心理诊断——只是一场有趣的自我对照。</p>
+        <p>结果包含性格特点、匹配理由、隐藏优势与趣味彩蛋，适合截图分享。</p>
+      </div>
+
+      <button class="btn-primary" onclick="startQuiz()">开始测试</button>
+      <p class="home-tips">约 5–8 分钟 · 共 40 题 · 纯前端本地运行</p>
+
+      <div class="footer-ornament">— 灵魂对照 · 古今一念 —</div>
+    </div>
+
+    <!-- 答题页 -->
+    <div id="quiz" class="page">
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <span>第 <span class="current" id="qNum">1</span> / 40 题</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="question-card" id="questionCard">
+        <div class="question-num" id="qLabel">QUESTION 01</div>
+        <div class="question-text" id="qText"></div>
+      </div>
+
+      <div class="options" id="options"></div>
+    </div>
+
+    <!-- 加载中 -->
+    <div id="loading" class="loading">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">正在对照古今灵魂…</div>
+    </div>
+
+    <!-- 结果页 -->
+    <div id="result" class="page">
+      <div class="result-header">
+        <div class="result-label">你的灵魂对应</div>
+        <div class="result-name" id="resName"></div>
+        <div class="result-category" id="resCategory"></div>
+        <div class="result-quote" id="resQuote"></div>
+      </div>
+
+      <div class="result-card">
+        <div class="card-title"><span class="icon">◈</span> 性格特点</div>
+        <div class="card-content">
+          <div class="traits-list" id="resTraits"></div>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="card-title"><span class="icon">◇</span> 匹配理由</div>
+        <div class="card-content" id="resReason"></div>
+      </div>
+
+      <div class="result-card">
+        <div class="card-title"><span class="icon">✦</span> 隐藏优势</div>
+        <div class="card-content" id="resAdvantage"></div>
+      </div>
+
+      <div class="result-card easter-egg">
+        <div class="card-title"><span class="icon">✧</span> 趣味彩蛋</div>
+        <div class="card-content" id="resEaster"></div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-primary" onclick="restartQuiz()">再测一次</button>
+        <button class="btn-secondary" onclick="shareResult()">复制结果文案</button>
+        <p class="share-tip">截图本页即可分享至小红书 / 朋友圈</p>
+      </div>
+
+      <div class="footer-ornament">— 仅供娱乐 · 灵魂自有归属 —</div>
+    </div>
+  </div>
+
+  <script>
+    // ==================== 结果人物数据 ====================
+    const results = {
+      zhuge: {
+        name: "诸葛亮",
+        category: "谋士 · 智慧与忠义",
+        quote: "运筹帷幄，心如明镜，却也懂得何时退守。",
+        traits: ["深思熟虑", "全局观强", "忠于信念", "谨慎克制", "善于布局"],
+        reason: "你习惯先观察再行动，喜欢把事情想清楚、把路径铺好。面对复杂局面，你不急于表态，而是默默梳理逻辑与人心。你对承诺很认真，一旦认定方向，就会长期投入。这种「谋定后动」的气质，与卧龙先生高度契合。",
+        advantage: "在混乱中能保持清醒，擅长把散乱信息整合成可行方案。别人焦虑时，你往往是那个能冷静画出路线图的人。",
+        easter: "如果穿越回三国，你大概会一边摇羽扇一边吐槽「主公又没听劝」，但最终还是会把出师表写得无比动人。"
+      },
+      lishimin: {
+        name: "李世民",
+        category: "帝王 · 雄才与格局",
+        quote: "能容人、能决断，也敢在关键时刻把自己推到前台。",
+        traits: ["格局开阔", "果断担当", "善于用人", "目标感强", "能屈能伸"],
+        reason: "你对「做成一件大事」有本能的渴望，也愿意为此承担压力与责任。你不排斥冲突，但更擅长把冲突转化为前进的动力。你重视人才与盟友，知道一个人再强也需要团队。这种帝王气度，与贞观天子最为接近。",
+        advantage: "关键时刻敢于拍板，也能在事后复盘与调整。你天生具备把一群人拧成一股绳的能力。",
+        easter: "如果现代职场有你，大概就是那个能把「不可能完成的项目」硬生生落地，还顺便把团队氛围搞得很燃的人。"
+      },
+      sushi: {
+        name: "苏轼",
+        category: "文人 · 豁达与多才",
+        quote: "人生有起落，但你总能在低谷里找到下一句好诗。",
+        traits: ["乐观豁达", "兴趣广泛", "幽默自嘲", "情感丰沛", "随遇而安"],
+        reason: "你不太会把一件事钻牛角尖到无法自拔。失败了会难过，但很快又能找到新的乐趣或角度。你对生活本身有热情——吃、游、写、聊、玩，都能让你感到充实。这种「此心安处是吾乡」的气度，正是东坡先生的灵魂底色。",
+        advantage: "抗挫折能力强，情绪恢复快。你总能把普通日子过出一点诗意，让周围人感到轻松。",
+        easter: "你大概是朋友圈里那个「被贬了也能把晚餐拍得像艺术」的人，评论区永远有人说「好羡慕你的心态」。"
+      },
+      libai: {
+        name: "李白",
+        category: "诗人 · 浪漫与自由",
+        quote: "仰天大笑出门去，你的灵魂从不肯被框住。",
+        traits: ["浪漫理想", "追求自由", "才华外溢", "率性真诚", "不喜拘束"],
+        reason: "你对「按部就班」天然过敏，更愿意跟着感觉与灵感走。你重视真实表达，讨厌虚伪与过度算计。你相信人生应该有诗、有酒、有远方，哪怕现实偶尔骨感，也要保留那份飞扬的心。这种气质，与诗仙李白一脉相承。",
+        advantage: "创造力与感染力强，能把平淡的生活瞬间点燃。你的出现本身就带着一点「不一样」的光。",
+        easter: "如果现代有你，大概是那个说走就走去看极光、然后用一段话把朋友全部治愈的人——钱包可能空，但灵魂很满。"
+      },
+      hanxin: {
+        name: "韩信",
+        category: "将领 · 隐忍与锋芒",
+        quote: "能受胯下之辱，也能一战定乾坤。你懂时机。",
+        traits: ["隐忍坚韧", "战略眼光", "野心内敛", "执行力强", "知耻后勇"],
+        reason: "你不是会轻易爆发的人，但内心有清晰的目标与底线。你愿意在必要的时候低头、蛰伏，只为在关键节点一击制胜。你对「被低估」并不陌生，却能把这种感觉转化为动力。这种「先忍后发」的气质，与淮阴侯高度相似。",
+        advantage: "长期主义能力强，能把短期委屈转化为长期优势。关键战役里，你往往是准备最充分的那一个。",
+        easter: "你可能是职场里那个「平时不太张扬，但一到大项目就突然开挂」的人，让人后知后觉地发现：原来一直在蓄力。"
+      },
+      taoyuanming: {
+        name: "陶渊明",
+        category: "隐士 · 淡泊与自在",
+        quote: "不为五斗米折腰，你更在意内心是否安稳。",
+        traits: ["淡泊名利", "重视内心", "亲近自然", "节奏自主", "拒绝内耗"],
+        reason: "你对外部的喧嚣与攀比并不太感冒，更在意自己是否过得舒服、真实。你愿意为内心安宁放弃一些「看起来很好」的东西。你享受独处、慢节奏与简单事物带来的满足感。这种「归去来兮」的选择，与五柳先生最为契合。",
+        advantage: "心理边界清晰，不易被外界节奏绑架。你能在浮躁环境中守住自己的节奏与幸福感。",
+        easter: "你大概是朋友里那个「周末拒绝一切局、只想在家养花看书」的人，却总能在朋友焦虑时给出最清醒的一句话。"
+      },
+      jingke: {
+        name: "荆轲",
+        category: "侠客 · 义气与决绝",
+        quote: "风萧萧兮易水寒，你做事向来不留退路。",
+        traits: ["重情重义", "行动果决", "敢于冒险", "忠诚直接", "不畏强权"],
+        reason: "你对「义」字很看重——朋友有难、原则被触碰，你会毫不犹豫地站出来。你不喜欢拖泥带水，决定了就做，哪怕风险很高。你讨厌算计与墙头草，更欣赏干脆与担当。这种「士为知己者死」的侠气，与荆轲一脉相承。",
+        advantage: "关键时刻执行力极强，能把「必须做」变成「立刻做」。你的出现往往能给团队带来勇气与方向感。",
+        easter: "你可能是那个「明明可以明哲保身，却还是选择帮朋友扛事」的人——事后自己也觉得「有点冲动」，但下次依然会这样。"
+      },
+      wuzetian: {
+        name: "武则天",
+        category: "女帝 · 野心与手腕",
+        quote: "你不接受「本该如此」，只接受「我要如此」。",
+        traits: ["目标清晰", "意志坚定", "善于博弈", "自我驱动", "不惧争议"],
+        reason: "你对「掌控自己命运」有强烈渴望。你不轻易认命，也不轻易把主动权交给别人。面对规则与偏见，你更愿意寻找破局点，而不是被动适应。你能承受孤独与非议，只要最终能走到想去的地方。这种气魄，与一代女帝高度共鸣。",
+        advantage: "抗压与破局能力突出。在别人觉得「没办法」的时候，你往往已经开始找第二条、第三条路。",
+        easter: "你大概是那个「被说太强势也无所谓，反正结果是自己想要的」的人——朋友既佩服又有点害怕被你卷到。"
+      }
+    };
+
+    // ==================== 40道题目 ====================
+    // 每题4个选项，scores 对应人物加分
+    const questions = [
+      {
+        q: "周末没有安排时，你最可能做什么？",
+        options: [
+          { t: "把下周要做的事列个清单，顺便复盘上周", s: { zhuge: 2, hanxin: 1 } },
+          { t: "约三五好友吃饭聊天，或者组织一次小活动", s: { lishimin: 2, sushi: 1 } },
+          { t: "一个人待着，看书、听音乐或发呆", s: { taoyuanming: 2, libai: 1 } },
+          { t: "临时起意出门，走到哪算哪，追求一点新鲜感", s: { libai: 2, jingke: 1 } }
+        ]
+      },
+      {
+        q: "朋友之间发生矛盾，大家都来找你评理，你会？",
+        options: [
+          { t: "先冷静听双方说完，再帮他们理清逻辑与利益点", s: { zhuge: 2, sushi: 1 } },
+          { t: "直接表态支持你认为对的一方，不怕得罪人", s: { jingke: 2, wuzetian: 1 } },
+          { t: "尽量和稀泥，让大家都消消气，事后再私下沟通", s: { sushi: 2, taoyuanming: 1 } },
+          { t: "觉得麻烦，能躲就躲，实在不行才介入", s: { taoyuanming: 2, hanxin: 1 } }
+        ]
+      },
+      {
+        q: "面对一个全新的、有挑战的任务，你的第一反应是？",
+        options: [
+          { t: "先收集信息、评估风险，再决定怎么推进", s: { zhuge: 2, hanxin: 1 } },
+          { t: "兴奋！终于有机会证明自己，立刻开始行动", s: { lishimin: 2, jingke: 1 } },
+          { t: "有点忐忑，但会告诉自己「大不了重来」", s: { sushi: 2, libai: 1 } },
+          { t: "先看看有没有退路，再决定是否全力投入", s: { wuzetian: 2, hanxin: 1 } }
+        ]
+      },
+      {
+        q: "你更看重一段关系里的什么？",
+        options: [
+          { t: "彼此真诚、重承诺，说到做到", s: { jingke: 2, zhuge: 1 } },
+          { t: "能一起成长、互相成就，而不是互相消耗", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "轻松愉快、不给对方压力，保留各自空间", s: { taoyuanming: 2, sushi: 1 } },
+          { t: "有共同的精神追求或趣味，聊得来最重要", s: { libai: 2, sushi: 1 } }
+        ]
+      },
+      {
+        q: "当你连续遇到挫折时，通常会？",
+        options: [
+          { t: "一个人消化情绪，然后调整策略再试", s: { hanxin: 2, zhuge: 1 } },
+          { t: "找信任的人倾诉，但不会让自己停太久", s: { sushi: 2, lishimin: 1 } },
+          { t: "怀疑是不是自己选错了方向，考虑换赛道", s: { taoyuanming: 1, libai: 2 } },
+          { t: "越挫越想证明给别人看，反而更拼", s: { wuzetian: 2, jingke: 1 } }
+        ]
+      },
+      {
+        q: "你理想中的「成功」更接近哪种画面？",
+        options: [
+          { t: "运筹帷幄，让复杂局面变得清晰可控", s: { zhuge: 2, hanxin: 1 } },
+          { t: "带领一群人做成一件被记住的大事", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "活得自在真实，有自己热爱的事与人", s: { taoyuanming: 2, libai: 1 } },
+          { t: "在关键时刻挺身而出，留下不悔的选择", s: { jingke: 2, libai: 1 } }
+        ]
+      },
+      {
+        q: "开会时有人提出明显有漏洞的方案，你会？",
+        options: [
+          { t: "会后私下指出，并给出替代思路", s: { zhuge: 2, sushi: 1 } },
+          { t: "当场礼貌但直接地提出疑问与建议", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "先观察别人反应，再决定是否开口", s: { hanxin: 2, taoyuanming: 1 } },
+          { t: "如果事不关己，可能就随它去", s: { taoyuanming: 2, libai: 1 } }
+        ]
+      },
+      {
+        q: "你更喜欢什么样的生活节奏？",
+        options: [
+          { t: "有明确目标和计划，按节点推进", s: { zhuge: 1, hanxin: 2, lishimin: 1 } },
+          { t: "大方向清晰，但过程允许灵活调整", s: { sushi: 2, lishimin: 1 } },
+          { t: "跟着感觉走，不喜欢被日程表绑住", s: { libai: 2, taoyuanming: 1 } },
+          { t: "尽量减少无效社交与会议，把时间留给重要的事", s: { taoyuanming: 2, wuzetian: 1 } }
+        ]
+      },
+      {
+        q: "别人评价你「太要强」时，你内心真实的想法是？",
+        options: [
+          { t: "我只是把事情做到自己满意而已", s: { zhuge: 1, hanxin: 2 } },
+          { t: "要强没什么不好，总比随波逐流强", s: { wuzetian: 2, lishimin: 1 } },
+          { t: "有点无奈，其实我只是不想辜负期待", s: { sushi: 1, jingke: 1 } },
+          { t: "可能真的需要放松一点，学会放过自己", s: { taoyuanming: 2, libai: 1 } }
+        ]
+      },
+      {
+        q: "你如何看待「规则」？",
+        options: [
+          { t: "规则是基础，但在必要时可以灵活变通", s: { zhuge: 2, sushi: 1 } },
+          { t: "规则是用来服务目标的，不合理就该改", s: { wuzetian: 2, lishimin: 1 } },
+          { t: "能遵守就遵守，但不会为了规则委屈自己", s: { taoyuanming: 2, libai: 1 } },
+          { t: "关键原则绝不动摇，其他可以商量", s: { jingke: 2, hanxin: 1 } }
+        ]
+      },
+      {
+        q: "你更享受哪种「被需要」的感觉？",
+        options: [
+          { t: "有人来找你出主意、定策略", s: { zhuge: 2, hanxin: 1 } },
+          { t: "有人信任你、愿意跟你一起冲", s: { lishimin: 2, jingke: 1 } },
+          { t: "有人因为你的存在而感到轻松或被治愈", s: { sushi: 2, libai: 1 } },
+          { t: "其实不太需要被需要，自己安好就够了", s: { taoyuanming: 2, wuzetian: 1 } }
+        ]
+      },
+      {
+        q: "旅行时你更倾向于？",
+        options: [
+          { t: "提前做好攻略，把时间与路线规划清楚", s: { zhuge: 2, hanxin: 1 } },
+          { t: "定好大致目的地，到了再随机探索", s: { sushi: 2, libai: 1 } },
+          { t: "跟靠谱的人一起，过程比目的地重要", s: { lishimin: 1, jingke: 1, sushi: 1 } },
+          { t: "能不去热闹景点就不去，更喜欢安静的地方", s: { taoyuanming: 2, libai: 1 } }
+        ]
+      },
+      {
+        q: "当你发现自己被低估时，通常会？",
+        options: [
+          { t: "不争辩，用结果说话", s: { hanxin: 2, zhuge: 1 } },
+          { t: "找合适时机展示实力，顺便调整局面", s: { wuzetian: 2, lishimin: 1 } },
+          { t: "有点委屈，但很快就放下了", s: { sushi: 2, taoyuanming: 1 } },
+          { t: "内心不服，行动上会更用力", s: { jingke: 1, libai: 1, wuzetian: 1 } }
+        ]
+      },
+      {
+        q: "你更愿意把时间花在？",
+        options: [
+          { t: "思考与规划，把事情想透", s: { zhuge: 2, hanxin: 1 } },
+          { t: "行动与实践，边做边调整", s: { lishimin: 2, jingke: 1 } },
+          { t: "体验与感受，丰富自己的内心世界", s: { libai: 2, sushi: 1 } },
+          { t: "休息与恢复，不让自己过度消耗", s: { taoyuanming: 2, sushi: 1 } }
+        ]
+      },
+      {
+        q: "面对不公平的对待，你更可能？",
+        options: [
+          { t: "先分析原因与利害，再决定如何应对", s: { zhuge: 2, hanxin: 1 } },
+          { t: "直接表达不满，必要时据理力争", s: { jingke: 2, wuzetian: 1 } },
+          { t: "能忍就忍，实在过分再反击", s: { hanxin: 1, taoyuanming: 1, sushi: 1 } },
+          { t: "内心愤慨但选择远离，不跟烂人纠缠", s: { taoyuanming: 2, libai: 1 } }
+        ]
+      },
+      {
+        q: "你选择工作/项目的重要标准是？",
+        options: [
+          { t: "能否发挥长处、做出有质量的成果", s: { zhuge: 2, hanxin: 1 } },
+          { t: "是否有成长空间与更大舞台", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "氛围是否舒服、人是否合得来", s: { sushi: 2, taoyuanming: 1 } },
+          { t: "是否真正感兴趣，而不是「应该做」", s: { libai: 2, taoyuanming: 1 } }
+        ]
+      },
+      {
+        q: "朋友找你借钱（金额不小），你会？",
+        options: [
+          { t: "评估对方还款能力与关系深度，再决定", s: { zhuge: 2, hanxin: 1 } },
+          { t: "如果关系够铁，会尽力帮忙", s: { jingke: 2, sushi: 1 } },
+          { t: "委婉拒绝或只借一小部分，保护自己", s: { wuzetian: 1, taoyuanming: 2 } },
+          { t: "看心情与当下经济状况，没有固定模式", s: { libai: 2, sushi: 1 } }
+        ]
+      },
+      {
+        q: "你更害怕哪种状态？",
+        options: [
+          { t: "事情失控、毫无准备", s: { zhuge: 2, hanxin: 1 } },
+          { t: "被困在平庸里，一事无成", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "失去自由，被各种责任绑死", s: { libai: 2, taoyuanming: 1 } },
+          { t: "背叛与被辜负，尤其是信任的人", s: { jingke: 2, sushi: 1 } }
+        ]
+      },
+      {
+        q: "你如何处理「想做」与「该做」的冲突？",
+        options: [
+          { t: "尽量把「该做」安排高效，挤出时间做「想做」", s: { zhuge: 1, sushi: 2 } },
+          { t: "优先「该做」，「想做」可以以后再说", s: { hanxin: 2, lishimin: 1 } },
+          { t: "尽量站在「想做」这边，否则会后悔", s: { libai: 2, taoyuanming: 1 } },
+          { t: "重新定义「该做」，让它更接近自己真正想要的", s: { wuzetian: 2, lishimin: 1 } }
+        ]
+      },
+      {
+        q: "你在团队中通常扮演什么角色？",
+        options: [
+          { t: "军师型：出主意、补漏洞、看全局", s: { zhuge: 2, hanxin: 1 } },
+          { t: "主心骨：定方向、扛责任、推动执行", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "气氛组：调节情绪、连接关系、让大家舒服", s: { sushi: 2, libai: 1 } },
+          { t: "独行侠：把分内事做好，少掺和人际", s: { taoyuanming: 2, jingke: 1 } }
+        ]
+      },
+      {
+        q: "看到别人公开炫耀时，你的真实反应是？",
+        options: [
+          { t: "分析对方凭什么，有无可借鉴之处", s: { zhuge: 1, hanxin: 2 } },
+          { t: "有点刺眼，但很快提醒自己专注自己的路", s: { wuzetian: 1, sushi: 2 } },
+          { t: "不太在意，甚至觉得有点无聊", s: { taoyuanming: 2, libai: 1 } },
+          { t: "如果对方真有实力，会真心佩服", s: { lishimin: 1, jingke: 1, sushi: 1 } }
+        ]
+      },
+      {
+        q: "你更喜欢什么样的表达方式？",
+        options: [
+          { t: "精准、有条理，把逻辑说清楚", s: { zhuge: 2, hanxin: 1 } },
+          { t: "有力、直接，不绕弯子", s: { jingke: 2, wuzetian: 1 } },
+          { t: "有温度、有画面感，能打动人", s: { libai: 2, sushi: 1 } },
+          { t: "少说多做，用行动代替解释", s: { taoyuanming: 1, hanxin: 1, lishimin: 1 } }
+        ]
+      },
+      {
+        q: "当计划被突发情况打乱时，你会？",
+        options: [
+          { t: "迅速重新评估，调整优先级与路径", s: { zhuge: 2, lishimin: 1 } },
+          { t: "先处理眼前最紧急的，其他以后再说", s: { jingke: 1, sushi: 2 } },
+          { t: "有点烦，但接受「计划赶不上变化」", s: { sushi: 1, taoyuanming: 2 } },
+          { t: "趁乱观察局势，寻找新的机会点", s: { wuzetian: 2, hanxin: 1 } }
+        ]
+      },
+      {
+        q: "你对「名利」的态度更接近？",
+        options: [
+          { t: "是达成理想的工具，不是目的本身", s: { zhuge: 2, lishimin: 1 } },
+          { t: "名利双收最好，但底线不能丢", s: { wuzetian: 2, hanxin: 1 } },
+          { t: "可有可无，内心安宁更重要", s: { taoyuanming: 2, sushi: 1 } },
+          { t: "名可以要，利看缘分，自由最贵", s: { libai: 2, jingke: 1 } }
+        ]
+      },
+      {
+        q: "你更愿意与什么样的人深交？",
+        options: [
+          { t: "聪明、靠谱、能一起把事做成", s: { zhuge: 1, lishimin: 2, hanxin: 1 } },
+          { t: "真诚、重情义、关键时刻不掉链子", s: { jingke: 2, sushi: 1 } },
+          { t: "有趣、聊得来、能互相启发", s: { libai: 2, sushi: 1 } },
+          { t: "不打扰、不消耗、各自安好也能长久", s: { taoyuanming: 2, wuzetian: 1 } }
+        ]
+      },
+      {
+        q: "你如何看待「妥协」？",
+        options: [
+          { t: "必要时的策略，但核心原则不妥协", s: { zhuge: 2, hanxin: 1 } },
+          { t: "可以战术性妥协，战略上绝不轻易退让", s: { wuzetian: 2, lishimin: 1 } },
+          { t: "能退一步就退一步，没必要处处硬刚", s: { sushi: 2, taoyuanming: 1 } },
+          { t: "在大是大非上很少妥协，小事随意", s: { jingke: 2, libai: 1 } }
+        ]
+      },
+      {
+        q: "你更享受哪种「成就感」？",
+        options: [
+          { t: "把复杂问题拆解并成功解决", s: { zhuge: 2, hanxin: 1 } },
+          { t: "带领团队拿到一个漂亮结果", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "完成一件真正喜欢的作品或体验", s: { libai: 2, sushi: 1 } },
+          { t: "守住自己的节奏与底线，没有被裹挟", s: { taoyuanming: 2, jingke: 1 } }
+        ]
+      },
+      {
+        q: "深夜独处时，你更容易想什么？",
+        options: [
+          { t: "接下来的计划、未完成的事、可能的风险", s: { zhuge: 2, hanxin: 1 } },
+          { t: "自己真正想要的人生，以及差在哪里", s: { wuzetian: 1, libai: 2, lishimin: 1 } },
+          { t: "最近发生的有意思的事，或者纯粹放空", s: { sushi: 2, taoyuanming: 1 } },
+          { t: "某些放不下的人或事，情绪会翻上来", s: { jingke: 1, sushi: 1, libai: 1 } }
+        ]
+      },
+      {
+        q: "你更反感哪种人？",
+        options: [
+          { t: "做事没逻辑、靠感觉瞎指挥的人", s: { zhuge: 2, hanxin: 1 } },
+          { t: "墙头草、关键时刻出卖队友的人", s: { jingke: 2, lishimin: 1 } },
+          { t: "过度消耗别人、边界感极差的人", s: { taoyuanming: 2, wuzetian: 1 } },
+          { t: "虚伪、说话做事两套标准的人", s: { libai: 1, sushi: 1, jingke: 1 } }
+        ]
+      },
+      {
+        q: "你决定做一件「有风险但可能很值」的事时，会？",
+        options: [
+          { t: "尽量把风险拆解、准备预案后再上", s: { zhuge: 2, hanxin: 1 } },
+          { t: "评估收益是否够大，够大就冲", s: { wuzetian: 2, lishimin: 1 } },
+          { t: "跟着直觉走，想太多就不敢做了", s: { libai: 2, jingke: 1 } },
+          { t: "先问自己：最坏结果我能否接受？", s: { sushi: 1, taoyuanming: 2 } }
+        ]
+      },
+      {
+        q: "你更喜欢怎样的学习/成长方式？",
+        options: [
+          { t: "系统学习、搭建框架，再深入细节", s: { zhuge: 2, hanxin: 1 } },
+          { t: "在实战中学，边干边悟", s: { lishimin: 2, jingke: 1 } },
+          { t: "广泛涉猎，兴趣导向，不求样样精通", s: { sushi: 2, libai: 1 } },
+          { t: "慢下来，把一件事吃透，再考虑下一步", s: { taoyuanming: 2, zhuge: 1 } }
+        ]
+      },
+      {
+        q: "当别人误解你时，你通常？",
+        options: [
+          { t: "解释清楚逻辑与事实，消除误会", s: { zhuge: 2, sushi: 1 } },
+          { t: "看对方是否值得解释，不值得就懒得说", s: { wuzetian: 2, taoyuanming: 1 } },
+          { t: "有点委屈，但时间会证明一切", s: { hanxin: 2, jingke: 1 } },
+          { t: "用更生动的方式表达自己，让对方感受到", s: { libai: 2, sushi: 1 } }
+        ]
+      },
+      {
+        q: "你对「改变」的态度是？",
+        options: [
+          { t: "必要的改变要主动设计，而不是被动挨打", s: { zhuge: 2, lishimin: 1 } },
+          { t: "改变是常态，关键是抓住其中的机会", s: { wuzetian: 2, sushi: 1 } },
+          { t: "能不改就不改，稳定感对我很重要", s: { taoyuanming: 2, hanxin: 1 } },
+          { t: "欢迎改变，尤其是能带来新鲜体验的那种", s: { libai: 2, jingke: 1 } }
+        ]
+      },
+      {
+        q: "你更看重自己在别人眼中的哪种形象？",
+        options: [
+          { t: "靠谱、有见识、能托付大事", s: { zhuge: 2, hanxin: 1 } },
+          { t: "有魄力、有结果、让人想跟随", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "有趣、真实、让人愿意靠近", s: { sushi: 2, libai: 1 } },
+          { t: "不在乎形象，做自己就好", s: { taoyuanming: 2, jingke: 1 } }
+        ]
+      },
+      {
+        q: "你处理情绪的方式更接近？",
+        options: [
+          { t: "先冷静分析情绪从哪来，再决定是否表达", s: { zhuge: 2, hanxin: 1 } },
+          { t: "允许自己有情绪，但不会让它主导行动太久", s: { lishimin: 1, sushi: 2 } },
+          { t: "通过创作、运动或倾诉把情绪转化出去", s: { libai: 2, sushi: 1 } },
+          { t: "需要独处空间，自己消化后再见人", s: { taoyuanming: 2, wuzetian: 1 } }
+        ]
+      },
+      {
+        q: "如果可以用一个词形容你的处事风格，你会选？",
+        options: [
+          { t: "谋定后动", s: { zhuge: 3 } },
+          { t: "当机立断", s: { lishimin: 2, jingke: 1 } },
+          { t: "随遇而安", s: { sushi: 2, taoyuanming: 1 } },
+          { t: "我行我素", s: { libai: 2, wuzetian: 1 } }
+        ]
+      },
+      {
+        q: "你更愿意把「余力」用在哪里？",
+        options: [
+          { t: "优化系统与方法，让未来更轻松", s: { zhuge: 2, hanxin: 1 } },
+          { t: "拓展人脉或资源，为更大目标铺路", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "兴趣与体验，让生活更丰盛", s: { libai: 2, sushi: 1 } },
+          { t: "休息与空白，保护自己的能量", s: { taoyuanming: 2, sushi: 1 } }
+        ]
+      },
+      {
+        q: "在「理想」与「现实」之间，你通常？",
+        options: [
+          { t: "用理想指导方向，用现实调整步伐", s: { zhuge: 2, lishimin: 1 } },
+          { t: "尽量让现实向理想靠近，而不是反过来", s: { wuzetian: 2, libai: 1 } },
+          { t: "接受现实限制，在约束里找自由", s: { taoyuanming: 2, sushi: 1 } },
+          { t: "关键时刻宁可撞了南墙，也不轻易放弃理想", s: { jingke: 2, libai: 1 } }
+        ]
+      },
+      {
+        q: "你最后悔的事情，更可能是？",
+        options: [
+          { t: "某次因为准备不足而错失机会", s: { zhuge: 2, hanxin: 1 } },
+          { t: "某次因为犹豫而没有及时出手", s: { lishimin: 1, wuzetian: 2 } },
+          { t: "某次为了迎合别人而委屈了自己", s: { taoyuanming: 2, libai: 1 } },
+          { t: "某次在关键时刻没有站出来", s: { jingke: 2, sushi: 1 } }
+        ]
+      },
+      {
+        q: "如果灵魂可以选一个「历史场景」短暂停留，你会选？",
+        options: [
+          { t: "军帐之中，与主公对弈天下大势", s: { zhuge: 2, hanxin: 1 } },
+          { t: "朝堂之上，一锤定音改变命运", s: { lishimin: 2, wuzetian: 1 } },
+          { t: "山水之间，饮酒作诗，不问俗事", s: { libai: 2, taoyuanming: 1 } },
+          { t: "易水河畔，明知前路艰难仍义无反顾", s: { jingke: 2, sushi: 1 } }
+        ]
+      }
+    ];
+
+    // ==================== 状态与逻辑 ====================
+    let current = 0;
+    let scores = {
+      zhuge: 0,
+      lishimin: 0,
+      sushi: 0,
+      libai: 0,
+      hanxin: 0,
+      taoyuanming: 0,
+      jingke: 0,
+      wuzetian: 0
+    };
+
+    function startQuiz() {
+      current = 0;
+      scores = { zhuge: 0, lishimin: 0, sushi: 0, libai: 0, hanxin: 0, taoyuanming: 0, jingke: 0, wuzetian: 0 };
+      showPage('quiz');
+      renderQuestion();
+    }
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('loading').classList.remove('active');
+      if (id === 'loading') {
+        document.getElementById('loading').classList.add('active');
+      } else {
+        document.getElementById(id).classList.add('active');
+      }
+    }
+
+    function renderQuestion() {
+      const q = questions[current];
+      document.getElementById('qNum').textContent = current + 1;
+      document.getElementById('qLabel').textContent = 'QUESTION ' + String(current + 1).padStart(2, '0');
+      document.getElementById('qText').textContent = q.q;
+
+      const percent = Math.round((current / questions.length) * 100);
+      document.getElementById('progressFill').style.width = percent + '%';
+      document.getElementById('progressPercent').textContent = percent + '%';
+
+      const opts = document.getElementById('options');
+      opts.innerHTML = '';
+      const labels = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="opt-label">${labels[i]}</span>${opt.t}`;
+        btn.onclick = () => selectOption(opt.s);
+        opts.appendChild(btn);
+      });
+
+      // 重新触发动画
+      const card = document.getElementById('questionCard');
+      card.style.animation = 'none';
+      card.offsetHeight;
+      card.style.animation = 'slideUp 0.4s ease';
+    }
+
+    function selectOption(s) {
+      // 加分
+      for (const key in s) {
+        if (scores.hasOwnProperty(key)) {
+          scores[key] += s[key];
+        }
+      }
+
+      // 简单选中反馈
+      const btns = document.querySelectorAll('.option-btn');
+      btns.forEach(b => b.style.pointerEvents = 'none');
+
+      current++;
+      if (current < questions.length) {
+        setTimeout(() => {
+          renderQuestion();
+        }, 280);
+      } else {
+        setTimeout(() => {
+          showPage('loading');
+          setTimeout(showResult, 1200);
+        }, 280);
+      }
+    }
+
+    function showResult() {
+      // 找最高分
+      let maxScore = -1;
+      let winner = 'zhuge';
+      const keys = Object.keys(scores);
+      // 轻微随机打破完全平局
+      keys.forEach(k => {
+        const adjusted = scores[k] + Math.random() * 0.3;
+        if (adjusted > maxScore) {
+          maxScore = adjusted;
+          winner = k;
+        }
+      });
+
+      const r = results[winner];
+      document.getElementById('resName').textContent = r.name;
+      document.getElementById('resCategory').textContent = r.category;
+      document.getElementById('resQuote').textContent = r.quote;
+      document.getElementById('resReason').textContent = r.reason;
+      document.getElementById('resAdvantage').textContent = r.advantage;
+      document.getElementById('resEaster').textContent = r.easter;
+
+      const traitsEl = document.getElementById('resTraits');
+      traitsEl.innerHTML = '';
+      r.traits.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'trait-tag';
+        span.textContent = t;
+        traitsEl.appendChild(span);
+      });
+
+      // 存一下方便复制
+      window._lastResult = r;
+
+      showPage('result');
+      // 进度条拉满
+      document.getElementById('progressFill').style.width = '100%';
+    }
+
+    function restartQuiz() {
+      startQuiz();
+    }
+
+    function shareResult() {
+      const r = window._lastResult;
+      if (!r) return;
+      const text = `【测测你的灵魂对应哪位中国历史人物】\n我的结果是：${r.name}（${r.category}）\n「${r.quote}」\n\n性格特点：${r.traits.join('、')}\n\n来测测你的灵魂对应谁？`;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('结果文案已复制，可以粘贴分享啦～');
+        }).catch(() => {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        alert('结果文案已复制，可以粘贴分享啦～');
+      } catch (e) {
+        alert('复制失败，请手动截图分享～');
+      }
+      document.body.removeChild(ta);
+    }
+  </script>
+</body>
+</html>
